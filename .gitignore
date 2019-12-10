@@ -1,0 +1,9 @@
+# file types to ignore
+*.project
+*.classpath
+*.bat
+
+# ignore .settings, .vscode, and target folders within this directory
+/.settings
+/.vscode
+/target
