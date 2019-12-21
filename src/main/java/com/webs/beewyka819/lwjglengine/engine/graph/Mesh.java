@@ -12,8 +12,6 @@ import com.webs.beewyka819.lwjglengine.engine.items.GameItem;
 import org.lwjgl.system.MemoryUtil;
 
 public class Mesh {
-    private static final int BITS_PER_BYTE = 8;
-
     private final int vaoID;
 
     private final int vboID;
@@ -39,8 +37,8 @@ public class Mesh {
             glBindBuffer(GL_ARRAY_BUFFER, vboID);
             glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW);
             glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
-            glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, (Float.SIZE / BITS_PER_BYTE) * positions.length);
-            glVertexAttribPointer(2, 3, GL_FLOAT, false, 0, (Float.SIZE / BITS_PER_BYTE) * (positions.length + textureCoords.length));
+            glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, (Float.BYTES) * positions.length);
+            glVertexAttribPointer(2, 3, GL_FLOAT, false, 0, (Float.BYTES) * (positions.length + textureCoords.length));
 
             iboID = glGenBuffers();
             indicesBuffer = MemoryUtil.memAllocInt(indices.length);
