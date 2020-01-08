@@ -5,10 +5,10 @@ import com.webs.beewyka819.lwjglengine.engine.io.MouseInput;
 import com.webs.beewyka819.lwjglengine.engine.io.Window;
 
 /**
- * The IGameLogic interface 
- * should be implemented by any class whose instances are intended 
- * to be executed by a thread. The class must define methods called init,
- * input, update, render, and cleanUp.
+ * The IGameLogic interface should be implemented by any class 
+ * that defines the game logic to be used by a GameEngine. 
+ * The class must define methods called init, input, update, 
+ * render, and cleanUp.
  * <p>
  * The init and render methods must each contain a Window
  * argument for the game window.
