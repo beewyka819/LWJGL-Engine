@@ -64,8 +64,6 @@ public class Window {
             throw new RuntimeException("Failed to create the GLFW window");
         }
 
-        InputHandler.init(windowHandle);
-
         glfwSetFramebufferSizeCallback(windowHandle, (window, width, height) -> {
             this.width = width;
             this.height = height;
@@ -119,7 +117,7 @@ public class Window {
 
     public void updateFrame() {
         glfwSwapBuffers(windowHandle);
-        InputHandler.update();
+        glfwPollEvents();
 
         frames++;
         if(System.currentTimeMillis() > time + 1000) {

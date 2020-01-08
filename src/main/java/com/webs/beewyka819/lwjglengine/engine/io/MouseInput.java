@@ -20,11 +20,11 @@ public class MouseInput {
         return displVec;
     }
 
-    public void input(Window window) {
+    public void input(Window window, InputHandler inputHandler) {
         displVec.x = 0;
         displVec.y = 0;
-        currentPos.x = InputHandler.getMouseX();
-        currentPos.y = InputHandler.getMouseY();
+        currentPos.x = inputHandler.getMouseX();
+        currentPos.y = inputHandler.getMouseY();
         if(window.isMouseLocked()) {
             double deltax = currentPos.x - previousPos.x;
             double deltay = currentPos.y - previousPos.y;

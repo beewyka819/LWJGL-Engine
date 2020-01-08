@@ -108,39 +108,39 @@ public class DummyGame implements IGameLogic {
     }
 
     @Override
-    public void input(Window window) throws Exception {
-        if(InputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
+    public void input(Window window, InputHandler inputHandler) throws Exception {
+        if(inputHandler.keyPressed(GLFW_KEY_ESCAPE)) {
             window.closeWindow();
         }
 
-        if(InputHandler.keyPressed(GLFW_KEY_F1)) {
+        if(inputHandler.keyPressed(GLFW_KEY_F1)) {
             window.showCounter(!window.isCounterShown());
         }
 
-        if(InputHandler.keyPressed(GLFW_KEY_LEFT_CONTROL)) {
+        if(inputHandler.keyPressed(GLFW_KEY_LEFT_CONTROL)) {
             isSprinting = true;
-        } else if(!InputHandler.keyDown(GLFW_KEY_W)) {
+        } else if(!inputHandler.keyDown(GLFW_KEY_W)) {
             isSprinting = false;
         }
 
         cameraInc.set(0, 0, 0);
-        if(InputHandler.keyDown(GLFW_KEY_W)) {
+        if(inputHandler.keyDown(GLFW_KEY_W)) {
             cameraInc.z = -1;
-        } else if(InputHandler.keyDown(GLFW_KEY_S)) {
+        } else if(inputHandler.keyDown(GLFW_KEY_S)) {
             cameraInc.z = 1;
         }
-        if(InputHandler.keyDown(GLFW_KEY_A)) {
+        if(inputHandler.keyDown(GLFW_KEY_A)) {
             cameraInc.x = -1;
-        } else if(InputHandler.keyDown(GLFW_KEY_D)) {
+        } else if(inputHandler.keyDown(GLFW_KEY_D)) {
             cameraInc.x = 1;
         }
-        if(InputHandler.keyDown(GLFW_KEY_LEFT_SHIFT)) {
+        if(inputHandler.keyDown(GLFW_KEY_LEFT_SHIFT)) {
             cameraInc.y = -1;
-        } else if(InputHandler.keyDown(GLFW_KEY_SPACE)) {
+        } else if(inputHandler.keyDown(GLFW_KEY_SPACE)) {
             cameraInc.y = 1;
         }
 
-        if(InputHandler.keyPressed(GLFW_KEY_E)) {
+        if(inputHandler.keyPressed(GLFW_KEY_E)) {
             isMouseLocked = !isMouseLocked;
         }
      }
