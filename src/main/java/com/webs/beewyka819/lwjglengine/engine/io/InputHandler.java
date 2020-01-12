@@ -80,6 +80,12 @@ public class InputHandler {
         for(int i = 0; i < mouseButtonStates.length; i++) {
             mouseButtonStates[i] = NO_STATE;
         }
+        
+        long now = System.nanoTime();
+        
+        if(now - lastMouseNS > mouseDoubleClickPeriodNS) {
+            lastMouseNS = 0;
+        }
     }
 
     /**
