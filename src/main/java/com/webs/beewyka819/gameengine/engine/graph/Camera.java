@@ -1,0 +1,45 @@
+package com.webs.beewyka819.gameengine.engine.graph;
+
+import org.joml.Vector3f;
+
+public class Camera {
+    private final Vector3f position;
+
+    private final Vector3f rotation;
+
+    public Camera() {
+        position = new Vector3f();
+        rotation = new Vector3f();
+    }
+
+    public Camera(Vector3f position, Vector3f rotation) {
+        this.position = position;
+        this.rotation = rotation;
+    }
+
+    public Vector3f getPosition() {
+        return position;
+    }
+
+    public void movePosition(float offsetX, float offsetY, float offsetZ) {
+        if(offsetZ != 0) {
+            position.z += (float) Math.cos(Math.toRadians(rotation.y)) * offsetZ;
+            position.x += (float) Math.sin(Math.toRadians(rotation.y)) * -offsetZ;
+        }
+        if(offsetX != 0) {
+            position.x += (float) Math.cos(Math.toRadians(rotation.y)) * offsetX;
+            position.z += (float) Math.sin(Math.toRadians(rotation.y)) * offsetX;
+        }
+        position.y += offsetY;
+    }
+
+    public Vector3f getRotation() {
+        return rotation;
+    }
+
+    public void moveRotation(float offsetX, float offsetY, float offsetZ) {
+        rotation.x += offsetX;
+        rotation.y += offsetY;
+        rotation.z += offsetZ;
+    }
+}
