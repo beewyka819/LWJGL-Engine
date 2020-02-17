@@ -1,4 +1,4 @@
-#version 460 core
+#version VER core
 
 const int MAX_POINT_LIGHTS = 5;
 const int MAX_SPOT_LIGHTS = 5;
@@ -6,8 +6,6 @@ const int MAX_SPOT_LIGHTS = 5;
 in vec2 pass_textureCoord;
 in vec3 mvVertexNormal;
 in vec3 mvVertexPos;
-in vec4 mlightviewVertexPos;
-in mat4 outModelViewMatrix;
 
 out vec4 fragColor;
 
@@ -46,22 +44,13 @@ struct Material {
     float reflectance;
 };
 
-struct Fog {
-    int activeFog;
-    vec3 color;
-    float density;
-};
-
 uniform sampler2D textureSampler;
-uniform sampler2D normalMap;
-uniform sampler2D shadowMap;
 uniform vec3 ambientLight;
 uniform float specularPower;
 uniform Material material;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 uniform DirectionalLight directionalLight;
-uniform Fog fog;
 
 vec4 ambientC;
 vec4 diffuseC;
@@ -129,72 +118,22 @@ vec4 calcDirectionalLight(DirectionalLight light, vec3 position, vec3 normal) {
     return calcLightColor(light.color, light.intensity, position, normalize(light.direction), normal);
 }
 
-vec4 calcFog(vec3 pos, vec4 color, Fog fog, vec3 ambientLight, DirectionalLight dirLight) {
-    vec3 fogColor = fog.color * (ambientLight + dirLight.color * dirLight.intensity);
-    float distance = length(pos);
-    float fogFactor = 1.0 / exp((distance * fog.density) * (distance * fog.density));
-    fogFactor = clamp(fogFactor, 0.0, 1.0);
-
-    vec3 resultColor = mix(fogColor, color.xyz, fogFactor);
-    return vec4(resultColor.xyz, color.w);
-}
-
-vec3 calcNormal(Material material, vec3 normal, vec2 text_coord, mat4 modelViewMatrix) {
-    vec3 newNormal = normal;
-    if(material.hasNormalMap == 1) {
-        newNormal = texture(normalMap, text_coord).rgb;
-        newNormal = normalize(newNormal * 2 - 1);
-        newNormal = normalize(modelViewMatrix * vec4(newNormal, 0.0)).xyz;
-    }
-    return newNormal;
-}
-
-float calcShadow(vec4 position) {
-    vec3 projCoords = position.xyz;
-    // Transform from screen coordinates to texture coordinates
-    projCoords = projCoords * 0.5 + 0.5;
-    float bias = 0.05;
-
-    float shadowFactor = 0.0;
-    vec2 inc = 1.0 / textureSize(shadowMap, 0);
-    for(int row = -1; row <= 1; ++row) {
-        for(int col = -1; col <= 1; ++col) {
-            float textDepth = texture(shadowMap, projCoords.xy + vec2(row, col) * inc).r;
-            shadowFactor += projCoords.z - bias > textDepth ? 1.0 : 0.0;
-        }
-    }
-    shadowFactor /= 9.0;
-
-    if(projCoords.z > 1.0) {
-        shadowFactor = 1.0;
-    }
-
-    return 1 - shadowFactor;
-}
-
 void main() {
     setupColors(material, pass_textureCoord);
 
-    vec3 currNormal = calcNormal(material, mvVertexNormal, pass_textureCoord, outModelViewMatrix);
-
-    vec4 diffuseSpecularComp = calcDirectionalLight(directionalLight, mvVertexPos, currNormal);
+    vec4 diffuseSpecularComp = calcDirectionalLight(directionalLight, mvVertexPos, mvVertexNormal);
 
     for(int i = 0; i < MAX_POINT_LIGHTS; i++) {
         if(pointLights[i].intensity > 0) {
-            diffuseSpecularComp += calcPointLight(pointLights[i], mvVertexPos, currNormal);
+            diffuseSpecularComp += calcPointLight(pointLights[i], mvVertexPos, mvVertexNormal);
         }
     }
 
     for(int i = 0; i < MAX_SPOT_LIGHTS; i++) {
         if(spotLights[i].pl.intensity > 0) {
-            diffuseSpecularComp += calcSpotLight(spotLights[i], mvVertexPos, currNormal);
+            diffuseSpecularComp += calcSpotLight(spotLights[i], mvVertexPos, mvVertexNormal);
         }
     }
 
-    float shadow = calcShadow(mlightviewVertexPos);
-    fragColor = clamp(ambientC * vec4(ambientLight, 1) + diffuseSpecularComp * shadow, 0, 1);
-
-    if(fog.activeFog == 1) {
-        fragColor = calcFog(mvVertexPos, fragColor, fog, ambientLight, directionalLight);
-    }
+    fragColor = ambientC * vec4(ambientLight, 1) + diffuseSpecularComp;
 }
