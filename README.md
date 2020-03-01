@@ -42,6 +42,6 @@ nor the 'shaded' suffix.
 - **Patrick Sullivan** - [beewyka819](https://github.com/beewyka819)
 
 ## License
-This project is licensed under the [MIT License](https://www.apache.org/licenses/LICENSE-2.0) - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the [MIT License](https://mit-license.org/) - see the [LICENSE.md](LICENSE.md) file for details
 ## Acknowledgements
 -**Antonio Hernández Bejarano** - [3D Game Development with LWJGL 3](https://lwjglgamedev.gitbooks.io/3d-game-development-with-lwjgl/content/)
