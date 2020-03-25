@@ -14,7 +14,7 @@ Must have the following installed
 - JDK 1.8
   - See how to install JDK 1.8 [here](https://www.foxinfotech.in/2019/03/how-to-install-jdk-8-on-windows-10.html)
 
-## Installing
+### Installing
 First, download one of the branches, either through git or by manually downloading the
 project on github and extracting the contents to a location on your local machine.
 
